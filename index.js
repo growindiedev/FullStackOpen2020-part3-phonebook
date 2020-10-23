@@ -3,8 +3,9 @@ const { response, request } = require('express')
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
 
-
+app.use(cors())
 app.use(express.json())
 app.use(morgan(":method :url :status :response-time ms :body"))
 
@@ -79,14 +80,14 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  person.id =  Math.floor(Math.random() * persons.length) 
+  person.id =  Math.floor(Math.random() * 10000) + persons.length 
   persons = persons.concat(person)
-  response.json(persons)
+  response.json(person)
 })
 
 morgan.token('body', (req, res) => console.log(JSON.stringify(req.body)));
 
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`)})
